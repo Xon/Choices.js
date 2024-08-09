@@ -6,6 +6,12 @@ import { StringPreEscaped } from '../interfaces/string-pre-escaped';
 import { ChoiceFull } from '../interfaces/choice-full';
 import { Types } from '../interfaces/types';
 
+export const canUseDom = !!(
+  typeof window !== 'undefined' &&
+  window.document &&
+  window.document.createElement
+);
+
 const getRandomNumber = (min: number, max: number): number =>
   Math.floor(Math.random() * (max - min) + min);
 

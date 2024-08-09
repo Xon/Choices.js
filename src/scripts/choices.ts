@@ -28,6 +28,7 @@ import { Options, ObjectsInConfig } from './interfaces/options';
 import { PassedElement } from './interfaces/passed-element';
 import { State } from './interfaces/state';
 import {
+  canUseDom,
   diff,
   generateId,
   getAdjacentEl,
@@ -56,6 +57,7 @@ import {
 
 /** @see {@link http://browserhacks.com/#hack-acea075d0ac6954f275a70023906050c} */
 const IS_IE11 =
+  canUseDom &&
   '-ms-scroll-limit' in document.documentElement.style &&
   '-ms-ime-align' in document.documentElement.style;
 
@@ -318,7 +320,7 @@ class Choices implements ChoicesInterface {
      */
     this._direction = this.passedElement.dir;
 
-    if (!this._direction) {
+    if (!this._direction && canUseDom) {
       const { direction: elementDirection } = window.getComputedStyle(
         this.passedElement.element,
       );

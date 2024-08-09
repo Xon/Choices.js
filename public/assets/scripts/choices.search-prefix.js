@@ -142,6 +142,9 @@
     }); };
 
     /* eslint-disable @typescript-eslint/no-explicit-any */
+    var canUseDom = !!(typeof window !== 'undefined' &&
+        window.document &&
+        window.document.createElement);
     var getRandomNumber = function (min, max) {
         return Math.floor(Math.random() * (max - min) + min);
     };
@@ -370,7 +373,7 @@
             // If flip is enabled and the dropdown bottom position is
             // greater than the window height flip the dropdown.
             var shouldFlip = false;
-            if (this.position === 'auto') {
+            if (canUseDom && this.position === 'auto') {
                 shouldFlip = !window.matchMedia("(min-height: ".concat(dropdownPos + 1, "px)"))
                     .matches;
             }
@@ -2008,7 +2011,8 @@
     };
 
     /** @see {@link http://browserhacks.com/#hack-acea075d0ac6954f275a70023906050c} */
-    var IS_IE11 = '-ms-scroll-limit' in document.documentElement.style &&
+    var IS_IE11 = canUseDom &&
+        '-ms-scroll-limit' in document.documentElement.style &&
         '-ms-ime-align' in document.documentElement.style;
     var USER_DEFAULTS = {};
     var parseDataSetId = function (element) {
@@ -2132,7 +2136,7 @@
              * or when calculated direction is different from the document
              */
             this._direction = this.passedElement.dir;
-            if (!this._direction) {
+            if (!this._direction && canUseDom) {
                 var elementDirection = window.getComputedStyle(this.passedElement.element).direction;
                 var documentDirection = window.getComputedStyle(document.documentElement).direction;
                 if (elementDirection !== documentDirection) {
